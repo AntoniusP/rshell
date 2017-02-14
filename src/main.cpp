@@ -9,35 +9,58 @@ int main()
 {
     string input = "";
     
-    while (1) 
-    {                            //shell should run indefinitly unless exited 
+    while(1)                                                // shell should run indefinitly unless exited 
+    {                                       
         cout << "$ ";
-        getline(cin, input);                // get whole command line
+        getline(cin, input);                                // get whole command line
         cout << endl;
         
         
-        cmdComponent line(input);           //create cmdComponent object
-        vector<string>* keywords;
+        cmdComponent sentence(input);                       // create cmdComponent object
+        vector<cmdComponents> keywords;
+
+        //keywords = sentence.parse();                      // parse whole word(strtok)
         
-        keywords = line.parse();            //parse that (parse should return a pointer)
+        vector<cmdComponent*> commands;                     // *WIP* vector to store the list of commands
         
-        vector<cmdComponent*> commands;     //*WIP* vector to store the list of commands
+        //create commands from keywords
         
-        if(commands.at(i).getWord() = "exit")                  //check if there is an exit
+        if(commands.at(i).getWord() = "exit")               // if user input exit, then exit
         {
             exit(0);
         }        
         else
         {
-            for(usigned i = 0; i < commands.size(); i++)
+            for(usigned i = 0; i < commands.size(); i++)    //else execute the command(s)
             {
-                commands.at(i)->execute();                      //execute the command(s) 
+                commands.at(i)->execute();  
             }
         }
     }
     
     return 0;
 }
+
+
+
+//*FROM GNU_SHELL_FILE 
+// void  main(void)
+// {
+//      char  line[1024];             /* the input line                 */
+//      char  *argv[64];              /* the command line argument      */
+
+//      while (1) {                   /* repeat until done ....         */
+//           printf("Shell -> ");     /*   display a prompt             */
+//           gets(line);              /*   read in the command line     */
+//           printf("\n");
+//           parse(line, argv);       /*   parse the line               */
+//           if (strcmp(argv[0], "exit") == 0)  /* is it an "exit"?     */
+//               exit(0);            /*   exit if it is                */
+//           execute(argv);           /* otherwise, execute the command */
+//      }
+// }
+
+
 
 // #include  <stdio.h>
 // #include  <sys/types.h>
@@ -53,41 +76,4 @@ int main()
 //               line++;             /* skip the argument until ...    */
 //      }
 //      *argv = '\0';                 /* mark the end of argument list  */
-// }
-
-// void  execute(char **argv)
-// {
-//      pid_t  pid;
-//      int    status;
-
-//      if ((pid = fork()) < 0) {     /* fork a child process           */
-//           printf("*** ERROR: forking child process failed\n");
-//           exit(1);
-//      }
-//      else if (pid == 0) {          /* for the child process:         */
-//           if (execvp(*argv, argv) < 0) {     /* execute the command  */
-//               printf("*** ERROR: exec failed\n");
-//               exit(1);
-//           }
-//      }
-//      else {                                  /* for the parent:      */
-//           while (wait(&status) != pid)       /* wait for completion  */
-//               ;
-//      }
-// }
-
-// void  main(void)
-// {
-//      char  line[1024];             /* the input line                 */
-//      char  *argv[64];              /* the command line argument      */
-
-//      while (1) {                   /* repeat until done ....         */
-//           printf("Shell -> ");     /*   display a prompt             */
-//           gets(line);              /*   read in the command line     */
-//           printf("\n");
-//           parse(line, argv);       /*   parse the line               */
-//           if (strcmp(argv[0], "exit") == 0)  /* is it an "exit"?     */
-//               exit(0);            /*   exit if it is                */
-//           execute(argv);           /* otherwise, execute the command */
-//      }
 // }
