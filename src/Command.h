@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <sys/types.h>
 #include "cmdComponent.h"
 
 class Command : public cmdComponent 
