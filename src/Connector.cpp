@@ -1,5 +1,5 @@
 #include "Connector.h"
 
 string getType(){
-    return ";";
+    return type;
 }
