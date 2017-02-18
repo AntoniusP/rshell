@@ -1,7 +1,7 @@
 #include "cmdComponent.h"
 
     bool isParsed(){
-        
+        return (keyword.find_first_of(" \&;")==-1);
     }
     void parse(){
         
