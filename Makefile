@@ -1,24 +1,18 @@
 FLAGS=-Wall -Werror -ansi -pedantic
 
-all: rshell cmdComponent Connector Command ArgList
-	
+all: rshell
+	g++ $(FLAGS) ./src/main.cpp ./src/cmdComponent.cpp \
+	./src/ArgList.cpp ./src/Command.cpp -o ./bin/rshell
+
 rshell:
-	mkdir bin
-	g++ $(FLAGS) src/main.cpp -o bin/main
-	
-cmdComponent:
-	mkdir bin
-	g++ %(FLAGS) src/cmdComponent.cpp -o bin/cmdComponent
+	mkdir -p ./bin
+#	g++ $(FLAGS) ./src/main.cpp -o ./bin/main
 
-Connector:
-	mkdir bin
-	g++ $(FLAGS) src/Connector.cpp -o bin/Connector
+#cmdComponent:
+#	g++ $(FLAGS) ./src/cmdComponent.cpp -o ./bin/cmdComponent
 
-Command:
-	mkdir bin
-	g++ $(FLAGS) src/Command.cpp -o bin/Command
+#ArgList:
+#	g++ $(FLAGS) ./src/Arglist.cpp -o ./bin/Arglist
 
-ArgList:
-	mkdir bin
-	g++ $(FLAGS) src/Arglist.cpp -o bin/Arglist
-	
+#Command:
+#	g++ $(FLAGS) ./src/Command.cpp -o ./bin/Command
