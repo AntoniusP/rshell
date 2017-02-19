@@ -1,41 +1,62 @@
-#include <iostream>
-#include <string>
-using namespace std;
-
 #include "Command.h"
-#include "ArgList.h"
 
 int main() 
 {
-    string input = "";
+    string input;
     
-    while(1)                                                // shell should run indefinitly unless exited 
-    {                                       
+    while (1)           // shell should run indefinitly unless exited 
+    {  
         cout << "$ ";
-        getline(cin, input);                                // get whole command line
-        cout << endl;
+        getline(cin, input);                        // get whole command line
         
         
-        cmdComponent sentence(input);                       // create cmdComponent object
-        vector<cmdComponents> keywords;
-
-        //keywords = sentence.parse();                      // parse whole word(strtok)
+        cmdComponent sentence(input);               // create cmdComponent object
+        vector<char*> words;
+        sentence.parse(words);                      // parse whole word(strtok)
         
-        vector<cmdComponent*> commands;                     // *WIP* vector to store the list of commands
-        
-        //create commands from keywords
-        
-        if(commands.at(i).getWord() = "exit")               // if user input exit, then exit
+        vector<Command> commands;             // vector to store the list of commands
+        for (unsigned i = 0; i < words.size(); i++)
         {
-            exit(0);
-        }        
-        else
-        {
-            for(usigned i = 0; i < commands.size(); i++)    //else execute the command(s)
+            ArgList args(words.size());
+            unsigned j = 0;
+            char *sc  = (char*) memchr (words.at(i), ';', strlen(words.at(i)));
+            char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
+            char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
+            char *com = (char*) memchr (words.at(i), '#', strlen(words.at(i)));
+            
+            if (com != NULL)
             {
-                commands.at(i)->execute();  
+                break;
             }
+            else if (sc == NULL && Or == NULL && And == NULL)
+            {
+                args.getArgs()[j] = words.at(i);
+            }
+            else
+            {
+                string type;
+                if (sc) { type = ";"; }
+                else if (And) { type = "&&"; }
+                else { type = "||"; }
+                cmdComponent connector(type);
+                //Command com(args, connector);
+                //commands.push_back(com);
+            }
+            j++;
         }
+        
+        
+    
+        // for(unsigned i = 0; i < commands.size(); i++)   //execute 
+        // {
+        //     if(commands.at(i).getArgs().getArgs()[0] == "exit")                 // exit case
+        //     {
+        //         exit(0);
+        //     }
+        //     commands.at(i).execute();  
+        // }
+        
+        
     }
     
     return 0;

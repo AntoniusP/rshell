@@ -1,44 +1,41 @@
 #include "Command.h"
+#include <stdio.h>
 
-
-cmdComponent* Command::getCommand() 
+Command::Command(ArgList a, cmdComponent e)
 {
-    return ex;
+    Args = a;
+    end = e;
+    return;
 }
-
-
+	
 void Command::execute() 
 {
-    // run program with arguments
-    // this only runs the 1 command passed in 
+    // uses the command data to execute single command 
     pid_t pid; 
     int status;
     
-    //execvp();
-    //fork();
-    //waitpid();
+    if ( (pid = fork()) < 0)                        // fork child process
+    {
+        perror("Fork Failed");
+        exit(1);
+    }
+    else if (pid == 0)
+    {
+        if (execvp(Args.getArgs()[0], Args.getArgs()) < 0)  // execute on child
+        {
+            perror("ERROR: exec failed");
+            exit(1);
+        }
+    }
+    else 
+    {
+        while (wait(&status) != pid)                // parent waits for child;
+            ;                                       // do nothing
+    }
     return;
 }
 
-
-//*FROM GNU_SHELL_FILE
-// void  execute(char **argv)
-// {
-//      pid_t  pid;
-//      int    status;
-
-//      if ((pid = fork()) < 0) {     /* fork a child process           */
-//           printf("*** ERROR: forking child process failed\n");
-//           exit(1);
-//      }
-//      else if (pid == 0) {          /* for the child process:         */
-//           if (execvp(*argv, argv) < 0) {     /* execute the command  */
-//               printf("*** ERROR: exec failed\n");
-//               exit(1);
-//           }
-//      }
-//      else {                                  /* for the parent:      */
-//           while (wait(&status) != pid)       /* wait for completion  */
-//               ;
-//      }
-// }
+ArgList Command::getArgs() 
+{
+    return Args;
+}

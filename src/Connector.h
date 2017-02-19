@@ -4,9 +4,10 @@
 #include "cmdComponent.h"
 
 class Connector: cmdComponent {
-    public:
-    
+    protected:
     string type;
+    
+    public:
     string getType();
 }
 

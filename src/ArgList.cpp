@@ -1,19 +1,22 @@
-#include "Arglist.h"
+#include "ArgList.h"
 
-
-void addArg(cmdComponent* a) // appends argument  “a” to ArgList
+ArgList::ArgList()
 {
-    ArgVec.push_back(a);
+    
 }
 
-
-void deleteArg()			      // removes arg at last index
+ArgList::ArgList(unsigned size)
 {
-    ArgVec.pop_back();
+    arguments = new char*[size];
 }
 
-
-cmdComponent* at(int i) // returns “argument” at index “i”
+ArgList::~ArgList()
 {
-    return ArgVec.at(i);
+    delete[] arguments;
 }
+
+char** ArgList::getArgs() 
+{
+    return arguments;
+}
+

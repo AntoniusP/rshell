@@ -2,22 +2,21 @@
 #define COMMAND_H
 
 #include <iostream>
-#include <string>
 #include <sys/types.h>
-#include "cmdComponent.h"
+#include <sys/wait.h>
+#include "ArgList.h"
 
 class Command : public cmdComponent 
 {
 	protected:
-	cmdComponent* ex;	// executable string from /usr/bin
-	ArgList Args;		// arguments 
-	Connector end;		// connector
+	ArgList Args;			// arguments
+	cmdComponent end;		// connector
 	
 	public:
 	Command();
-	Command(cmdComponent x, ArgList a, connector e) : ex(x), Args(a), end(e) {}
-	cmdComponent* getCommand();
+	Command(ArgList a, cmdComponent e);
 	void execute();		// runs the program with arguments 
+	ArgList getArgs();
 };
 
 #endif
