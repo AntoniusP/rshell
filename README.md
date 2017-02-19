@@ -16,7 +16,12 @@ input comes across a "connector". When a connector is read in, the
 program will consider its next instruction based on the connector 
 type. 
 
-Main.cpp:
+
+Knowns:
 - handles input output and contains a command list to execute.
 - will be able to run class functions 
 - runs indefinitely unless the input is exit
+
+Bugs:
+- does not execute commands
+- SegFault/MemoryLeak when constructing ArgList
