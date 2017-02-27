@@ -1,14 +1,17 @@
 #include "Command.h"
 #include <stdio.h>
 
-Command::Command(ArgList a, cmdComponent e)
+Command::Command()
 {
-    Args = a;
-    end = e;
-    return;
+    
 }
-	
-void Command::execute() 
+
+void Command::setCommand(char** a, string e) 
+{
+    
+}
+
+bool Command::execute() 
 {
     // uses the command data to execute single command 
     pid_t pid; 
@@ -21,7 +24,7 @@ void Command::execute()
     }
     else if (pid == 0)
     {
-        if (execvp(Args.getArgs()[0], Args.getArgs()) < 0)  // execute on child
+        if (execvp(Args[0], Args) < 0)  // execute on child
         {
             perror("ERROR: exec failed");
             exit(1);
@@ -32,10 +35,10 @@ void Command::execute()
         while (wait(&status) != pid)                // parent waits for child;
             ;                                       // do nothing
     }
-    return;
+    return true;
 }
 
-ArgList Command::getArgs() 
+char** Command::getArgs() 
 {
     return Args;
 }

@@ -1,4 +1,23 @@
 #include "Command.h"
+#include <sys/stat.h>
+
+// split word into tokens and put them in a vector of char*
+void parse(string keyword, vector<char*> &wordList)
+{
+    char *cs = new char[keyword.length()];
+    for (unsigned i = 0; i < keyword.length(); i++)
+    {
+        cs[i] = keyword[i];
+    }
+    cs[keyword.length()] = '\0';        //add the null terminator at the end of
+
+    char *tokens = strtok(cs, " ");
+    while (tokens) 
+    {
+        wordList.push_back(tokens);
+        tokens = strtok(NULL, " ");
+    }
+}
 
 int main() 
 {
@@ -9,15 +28,18 @@ int main()
         cout << "$ ";
         getline(cin, input);                        // get whole command line
         
+        if(input == "exit") {
+            exit(0);
+            break;
+        }
         
-        cmdComponent sentence(input);               // create cmdComponent object
         vector<char*> words;
-        sentence.parse(words);                      // parse whole word(strtok)
+        parse(input, words);                      // parse whole word(strtok)
         
         vector<Command> commands;             // vector to store the list of commands
         for (unsigned i = 0; i < words.size(); i++)
         {
-            ArgList args(words.size());
+            char** args = new char*[words.size()];
             unsigned j = 0;
             char *sc  = (char*) memchr (words.at(i), ';', strlen(words.at(i)));
             char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
@@ -30,7 +52,7 @@ int main()
             }
             else if (sc == NULL && Or == NULL && And == NULL)
             {
-                args.getArgs()[j] = words.at(i);
+                args[j] = words.at(i);
             }
             else
             {
@@ -38,9 +60,9 @@ int main()
                 if (sc) { type = ";"; }
                 else if (And) { type = "&&"; }
                 else { type = "||"; }
-                cmdComponent connector(type);
-                //Command com(args, connector);
-                //commands.push_back(com);
+                Command com;
+                com.setCommand(args, type);
+                commands.push_back(com);
             }
             j++;
         }

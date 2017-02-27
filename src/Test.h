@@ -4,19 +4,18 @@
 #include <iostream>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "ArgList.h"
+#include <sys/stat.h>
 
-class Command : public cmdComponent 
+#include "cmdComponent.h"
+
+class Test : public cmdComponent 
 {
 	protected:
 	char** Args;
-	string end;		// connector
 	
 	public:
-	Command();
-	void setCommand(char** a, string e);
+	Test();
 	bool execute();		// runs the program with arguments 
-	char** getArgs();
 };
 
 #endif

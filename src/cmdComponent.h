@@ -10,15 +10,10 @@
 using namespace std;
 
 class cmdComponent {
-    protected:
-    string keyword;
-    
+
     public:
-    cmdComponent() : keyword("") {}
-    cmdComponent(string s) : keyword(s) {}
-    void parse(vector<char*> &wordList);
-    bool is_connector();
-    string getWord();
+    cmdComponent();
+    virtual bool execute() = 0;
 };
 
 #endif
