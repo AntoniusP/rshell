@@ -1,5 +1,7 @@
 #include "Command.h"
 #include <sys/stat.h>
+#include <stack>
+#include <queue>
 
 // split word into tokens and put them in a vector of char*
 void parse(string keyword, vector<char*> &wordList)
@@ -28,95 +30,81 @@ int main()
         cout << "$ ";
         getline(cin, input);                        // get whole command line
         
-        if(input == "exit") {
+        if(input == "exit") 
+        {
             exit(0);
             break;
         }
-        
+        vector<string> connectors;
+        vector<Command> commands;
         vector<char*> words;
-        parse(input, words);                      // parse whole word(strtok)
+        // parse input with strtok
+        parse(input, words);
         
-        vector<Command> commands;             // vector to store the list of commands
+        unsigned j = 0;
         for (unsigned i = 0; i < words.size(); i++)
         {
             char** args = new char*[words.size()];
-            unsigned j = 0;
             char *sc  = (char*) memchr (words.at(i), ';', strlen(words.at(i)));
             char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
             char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
             char *com = (char*) memchr (words.at(i), '#', strlen(words.at(i)));
             
-            if (com != NULL)
+            if ( (sc == NULL && Or == NULL && And == NULL) ) 
             {
-                break;
-            }
-            else if (sc == NULL && Or == NULL && And == NULL)
-            {
-                args[j] = words.at(i);
+                if ( (com == NULL) && (i == (words.size() - 1)) )
+                {
+                    args[j] = words.at(i);
+                    Command com;
+                    com.setCommand(args);
+                    commands.push_back(com);
+                }
+                else if (com == NULL)
+                {
+                    args[j] = words.at(i);
+                    j++;
+                }
+                else
+                {
+                    Command com;
+                    com.setCommand(args);
+                    commands.push_back(com);
+                    break;
+                }
             }
             else
             {
-                string type;
-                if (sc) { type = ";"; }
-                else if (And) { type = "&&"; }
-                else { type = "||"; }
+                j = 0;
+                string type = "";
+                if (sc)
+                {
+                    type = ";";
+                    connectors.push_back(type);
+                }
+                else if (And)
+                {
+                    type = "&&";
+                    connectors.push_back(type);
+                }
+                else 
+                { 
+                    type = "||";
+                    connectors.push_back(type);
+                }
+                
                 Command com;
-                com.setCommand(args, type);
+                com.setCommand(args);
                 commands.push_back(com);
             }
-            j++;
         }
         
-        
-    
-        // for(unsigned i = 0; i < commands.size(); i++)   //execute 
-        // {
-        //     if(commands.at(i).getArgs().getArgs()[0] == "exit")                 // exit case
-        //     {
-        //         exit(0);
-        //     }
-        //     commands.at(i).execute();  
-        // }
-        
-        
+        cout << "command vector size: " << commands.size() << endl;
+        // add connectors to vector
+        // take two commands and connect them 
+        // push to stack 
+        // take commands from stack and connect them
     }
     
     return 0;
 }
 
-
-
-//*FROM GNU_SHELL_FILE 
-// void  main(void)
-// {
-//      char  line[1024];             /* the input line                 */
-//      char  *argv[64];              /* the command line argument      */
-
-//      while (1) {                   /* repeat until done ....         */
-//           printf("Shell -> ");     /*   display a prompt             */
-//           gets(line);              /*   read in the command line     */
-//           printf("\n");
-//           parse(line, argv);       /*   parse the line               */
-//           if (strcmp(argv[0], "exit") == 0)  /* is it an "exit"?     */
-//               exit(0);            /*   exit if it is                */
-//           execute(argv);           /* otherwise, execute the command */
-//      }
-// }
-
-
-
-// #include  <stdio.h>
-// #include  <sys/types.h>
-
-// void  parse(char *line, char **argv)
-// {
-//      while (*line != '\0') {       /* if not the end of line ....... */ 
-//           while (*line == ' ' || *line == '\t' || *line == '\n')
-//               *line++ = '\0';     /* replace white spaces with 0    */
-//           *argv++ = line;          /* save the argument position     */
-//           while (*line != '\0' && *line != ' ' && 
-//                  *line != '\t' && *line != '\n') 
-//               line++;             /* skip the argument until ...    */
-//      }
-//      *argv = '\0';                 /* mark the end of argument list  */
-// }

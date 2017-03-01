@@ -1,5 +1,9 @@
 #include "Connector.h"
 
-string getType(){
-    return type;
+Connector::~Connector() 
+{
+    delete left;
+    delete right;
+    left = 0; 
+    right = 0;
 }

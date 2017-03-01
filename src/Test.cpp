@@ -12,7 +12,7 @@ bool Test::execute()
     
     stat(Args[1], &buf);
     
-    if (S_ISREG(buf.st_mode)) 
+    if (S_ISREG(buf.st_mode))
     {
         return exists;
     }

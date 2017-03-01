@@ -1,7 +1,6 @@
-#ifndef COMMAND_H
-#define COMMAND_H
+#ifndef TEST_H
+#define TEST_H
 
-#include <iostream>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>

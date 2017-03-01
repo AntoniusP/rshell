@@ -5,10 +5,13 @@
 
 class Connector: cmdComponent {
     protected:
-    string type;
+    cmdComponent* left;
+    cmdComponent* right;
     
     public:
-    string getType();
-}
-
+    Connector() : left(0), right(0) {}
+    Connector(cmdComponent* l, cmdComponent* r) : left(l), right(r) {}
+    ~Connector();
+    virtual bool execute() = 0;
+};
 #endif
