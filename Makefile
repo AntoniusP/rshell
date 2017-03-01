@@ -6,6 +6,9 @@ all: rshell
 
 rshell:
 	mkdir -p ./bin
+	
+clean:
+	rm bin/rshell
 #	g++ $(FLAGS) ./src/main.cpp -o ./bin/main
 
 #cmdComponent:
