@@ -1,1 +1,3 @@
-#test files to be implemented later 
+#!bin/sh
+
+../bin/rshell < exit_t
