@@ -9,6 +9,7 @@ class Parentheses: cmdComponent {
     
     public:
     string getType();
+    sting test;
 }
 
 #endif
