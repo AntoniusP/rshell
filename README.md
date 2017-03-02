@@ -21,6 +21,6 @@ Specifications:
 - runs indefinitely unless the input is "exit"
 
 Bugs:
-- does not execute commands
+- does not execute commands correctly
 - does not work if there is no space between connectors
 - will not exit if input is not "exit"
