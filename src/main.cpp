@@ -47,6 +47,11 @@ int main()
         queue<string> connectors;
         vector<cmdComponent*> commands;
         
+        for (unsigned a = 0; a < words.size(); a++)
+        {
+            cout << words.at(a) << endl;    
+        }
+        
         unsigned j = 0;
         for (unsigned i = 0; i < words.size(); i++)
         {
@@ -83,26 +88,26 @@ int main()
             }
             else
             {
-                cout << "connector" << endl;
                 j = 0;
                 string type = "";
                 if (sc)
                 {
+                    cout << "; connector" << endl;
                     type = ";";
                     connectors.push(type);
                 }
                 else if (And)
                 {
+                    cout << "&& connector" << endl;
                     type = "&&";
                     connectors.push(type);
                 }
                 else 
                 { 
+                    cout << "|| connector" << endl;
                     type = "||";
                     connectors.push(type);
                 }
-                cout << "connector" << endl;
-                //Command com;
                 Command* com = new Command();
                 com->setCommand(args);
                 commands.push_back(com);
@@ -117,7 +122,7 @@ int main()
             stack.push(commands.at(i));
         }
         
-        cout << "Test4" << endl;
+        cout << "creating ex tree..." << endl;
         while ((!connectors.empty()) && (!stack.empty()))
         {
                 cmdComponent* tleft = stack.top();
@@ -129,22 +134,29 @@ int main()
                 
                 if (connectors.front() == ";")
                 {
+                    cout << "made ';' connector" << endl;
                     tmp = new Semicolon(tleft, tright);
                 }
                 else if (connectors.front() == "&&")
                 {
+                    cout << "made '&&' connector" << endl;
                     tmp = new And(tleft, tright);
                 }
                 else
                 {
+                    cout << "made '||' connector" << endl;
                     tmp = new Or(tleft, tright);
                 }
                 stack.push(tmp);
         }
         
-        cout << "execute test" << endl;
+        cout << "before ex" << endl;
         // finally execute tree of commands
-        stack.top()->execute();
+        cout << "stack size: " << stack.size() << endl;
+        if (!stack.empty())
+        {
+            stack.top()->execute();
+        }
         cout << "after ex" << endl;
         
     }

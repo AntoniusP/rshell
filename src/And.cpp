@@ -2,6 +2,7 @@
 
 bool And::execute() 
 {
+    cout << "and ex" << endl;
     if(left->execute())
     {
         if(right->execute())

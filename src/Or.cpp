@@ -1,6 +1,8 @@
 #include "Or.h"
 
-bool Or::execute() {
+bool Or::execute() 
+{
+    cout << "Or ex" << endl;
     if (!left->execute())
     {
         if (right->execute())
