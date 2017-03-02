@@ -22,7 +22,6 @@ bool Command::execute()
     int status;
     bool success = true;
     pid_t pid = fork();
-    cout << "just forked" << endl;
     
     if (pid < 0)                        // fork child process
     {
@@ -34,7 +33,7 @@ bool Command::execute()
         if (execvp(Args[0], Args) < 0)  // execute on child
         {
             success = false;
-            perror("ERROR: exec failed");
+            perror("ERROR: exec >");    
             exit(1);
         }
     }
@@ -44,7 +43,7 @@ bool Command::execute()
         {                                       // parent waits for child;
             if (WEXITSTATUS(status) != 0)
             {
-                return false;
+                success = false;
             }
         }                                   // do nothing
     }

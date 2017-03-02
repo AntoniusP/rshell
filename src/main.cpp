@@ -25,11 +25,21 @@ void parse(string keyword, vector<char*> &wordList)
     }
 }
 
+void copy(char** &arr, vector<char*>& v)
+{
+    v.push_back(NULL);
+    arr = new char*[v.size()];
+    for (unsigned i = 0; i < v.size(); i++)
+    {
+        arr[i] = v.at(i);
+    }
+}
+
 int main() 
 {
     string input;
     
-    while (1)           // shell should run indefinitly unless exited 
+    while (1)           // shell should run indefinitely unless exited 
     {  
         cout << "$ ";
         getline(cin, input);                        // get whole command line
@@ -45,14 +55,15 @@ int main()
         parse(input, words);
         
         queue<string> connectors;
-        vector<cmdComponent*> commands;
+        queue<cmdComponent*> commands;
         
         for (unsigned a = 0; a < words.size(); a++)
         {
             cout << words.at(a) << endl;    
         }
         
-        unsigned j = 0;
+        //unsigned j = 0;
+        vector<char*> argv;
         for (unsigned i = 0; i < words.size(); i++)
         {
             char** args = new char*[words.size()];
@@ -66,29 +77,34 @@ int main()
             {
                 if ( (com == NULL) && (i == (words.size() - 1)) )
                 {
-                    cout << "tokens" << endl;
-                    args[j] = words.at(i);
+                     argv.push_back(words.at(i));
+                     char** args;
+                     copy(args, argv);
+                    //args[j] = words.at(i);
                     Command* com = new Command();
                     com->setCommand(args);
-                    commands.push_back(com);
+                    commands.push(com);
+                     argv.clear();
                 }
                 else if (com == NULL)
                 {
-                    cout << "tokens" << endl;
-                    args[j] = words.at(i);
-                    j++;
+                     argv.push_back(words.at(i));
+                    //args[j] = words.at(i);
+                    //j++;
                 }
                 else
                 {
+                    
                     Command* com = new Command();
                     com->setCommand(args);
-                    commands.push_back(com);
+                    commands.push(com);
+                     argv.clear();
                     break;
-                }
+                } 
             }
             else
             {
-                j = 0;
+                // j = 0;
                 string type = "";
                 if (sc)
                 {
@@ -108,46 +124,52 @@ int main()
                     type = "||";
                     connectors.push(type);
                 }
+                
                 Command* com = new Command();
                 com->setCommand(args);
-                commands.push_back(com);
+                commands.push(com);
             }
         }
         
         cout << "command vector size: " << commands.size() << endl;
         stack<cmdComponent*> stack;
         
-        for (unsigned i = commands.size() - 1; i <= 0; i--)
+        while (!commands.empty())
         {
-            stack.push(commands.at(i));
+            cout << "pushing command =>";
+            stack.push(commands.front());
+            commands.pop();
+            cout << "stack size now: " << stack.size() << endl; 
         }
         
+        cout <<"stack size before tree:" << stack.size() << endl;
         cout << "creating ex tree..." << endl;
-        while ((!connectors.empty()) && (!stack.empty()))
+        while ((!connectors.empty()) && !stack.empty())
         {
-                cmdComponent* tleft = stack.top();
-                stack.pop();
-                cmdComponent* tright = stack.top();
-                stack.pop();
-                
-                cmdComponent* tmp;
-                
-                if (connectors.front() == ";")
-                {
-                    cout << "made ';' connector" << endl;
-                    tmp = new Semicolon(tleft, tright);
-                }
-                else if (connectors.front() == "&&")
-                {
-                    cout << "made '&&' connector" << endl;
-                    tmp = new And(tleft, tright);
-                }
-                else
-                {
-                    cout << "made '||' connector" << endl;
-                    tmp = new Or(tleft, tright);
-                }
-                stack.push(tmp);
+            cmdComponent* tleft = stack.top();
+            stack.pop();
+            cmdComponent* tright = stack.top();
+            stack.pop();
+            
+            cmdComponent* tmp;
+            
+            if (connectors.front() == ";")
+            {
+                cout << "made ';' connector" << endl;
+                tmp = new Semicolon(tleft, tright);
+            }
+            else if (connectors.front() == "&&")
+            {
+                cout << "made '&&' connector" << endl;
+                tmp = new And(tleft, tright);
+            }
+            else
+            {
+                cout << "made '||' connector" << endl;
+                tmp = new Or(tleft, tright);
+            }
+            stack.push(tmp);
+            connectors.pop();
         }
         
         cout << "before ex" << endl;
@@ -157,7 +179,6 @@ int main()
         {
             stack.top()->execute();
         }
-        cout << "after ex" << endl;
         
     }
     
