@@ -10,3 +10,5 @@ class And: public Connector {
     And(cmdComponent* l, cmdComponent* r) : Connector(l,r) {}
     bool execute();
 };
+
+#endif

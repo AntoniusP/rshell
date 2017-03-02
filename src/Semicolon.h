@@ -6,8 +6,8 @@
 class Semicolon: public Connector {
     
     public:
-    Or() : Connector() {}
-    Or(cmdComponent* l, cmdComponent* r) : Connector(l,r) {}
+    Semicolon() : Connector() {}
+    Semicolon(cmdComponent* l, cmdComponent* r) : Connector(l,r) {}
     bool execute();
 };
 

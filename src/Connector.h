@@ -3,7 +3,7 @@
 
 #include "cmdComponent.h"
 
-class Connector: cmdComponent {
+class Connector: public cmdComponent {
     protected:
     cmdComponent* left;
     cmdComponent* right;

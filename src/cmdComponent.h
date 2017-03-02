@@ -10,9 +10,7 @@
 using namespace std;
 
 class cmdComponent {
-
     public:
-    cmdComponent();
     virtual bool execute() = 0;
 };
 

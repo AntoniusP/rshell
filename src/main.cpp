@@ -1,4 +1,8 @@
 #include "Command.h"
+#include "Or.h"
+#include "And.h"
+#include "Semicolon.h"
+
 #include <sys/stat.h>
 #include <stack>
 #include <queue>
@@ -35,11 +39,13 @@ int main()
             exit(0);
             break;
         }
-        vector<string> connectors;
-        vector<Command> commands;
+        
+        
         vector<char*> words;
-        // parse input with strtok
         parse(input, words);
+        
+        queue<string> connectors;
+        vector<cmdComponent*> commands;
         
         unsigned j = 0;
         for (unsigned i = 0; i < words.size(); i++)
@@ -50,59 +56,97 @@ int main()
             char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
             char *com = (char*) memchr (words.at(i), '#', strlen(words.at(i)));
             
+            
             if ( (sc == NULL && Or == NULL && And == NULL) ) 
             {
                 if ( (com == NULL) && (i == (words.size() - 1)) )
                 {
+                    cout << "tokens" << endl;
                     args[j] = words.at(i);
-                    Command com;
-                    com.setCommand(args);
+                    Command* com = new Command();
+                    com->setCommand(args);
                     commands.push_back(com);
                 }
                 else if (com == NULL)
                 {
+                    cout << "tokens" << endl;
                     args[j] = words.at(i);
                     j++;
                 }
                 else
                 {
-                    Command com;
-                    com.setCommand(args);
+                    Command* com = new Command();
+                    com->setCommand(args);
                     commands.push_back(com);
                     break;
                 }
             }
             else
             {
+                cout << "connector" << endl;
                 j = 0;
                 string type = "";
                 if (sc)
                 {
                     type = ";";
-                    connectors.push_back(type);
+                    connectors.push(type);
                 }
                 else if (And)
                 {
                     type = "&&";
-                    connectors.push_back(type);
+                    connectors.push(type);
                 }
                 else 
                 { 
                     type = "||";
-                    connectors.push_back(type);
+                    connectors.push(type);
                 }
-                
-                Command com;
-                com.setCommand(args);
+                cout << "connector" << endl;
+                //Command com;
+                Command* com = new Command();
+                com->setCommand(args);
                 commands.push_back(com);
             }
         }
         
         cout << "command vector size: " << commands.size() << endl;
-        // add connectors to vector
-        // take two commands and connect them 
-        // push to stack 
-        // take commands from stack and connect them
+        stack<cmdComponent*> stack;
+        
+        for (unsigned i = commands.size() - 1; i <= 0; i--)
+        {
+            stack.push(commands.at(i));
+        }
+        
+        cout << "Test4" << endl;
+        while ((!connectors.empty()) && (!stack.empty()))
+        {
+                cmdComponent* tleft = stack.top();
+                stack.pop();
+                cmdComponent* tright = stack.top();
+                stack.pop();
+                
+                cmdComponent* tmp;
+                
+                if (connectors.front() == ";")
+                {
+                    tmp = new Semicolon(tleft, tright);
+                }
+                else if (connectors.front() == "&&")
+                {
+                    tmp = new And(tleft, tright);
+                }
+                else
+                {
+                    tmp = new Or(tleft, tright);
+                }
+                stack.push(tmp);
+        }
+        
+        cout << "execute test" << endl;
+        // finally execute tree of commands
+        stack.top()->execute();
+        cout << "after ex" << endl;
+        
     }
     
     return 0;

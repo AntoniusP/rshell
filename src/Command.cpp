@@ -6,6 +6,11 @@ Command::Command()
     
 }
 
+Command::~Command()
+{
+    delete[] Args;    
+}
+
 void Command::setCommand(char** a) 
 {
     Args = a;
@@ -14,11 +19,12 @@ void Command::setCommand(char** a)
 bool Command::execute() 
 {
     // uses the command data to execute single command 
-    pid_t pid; 
     int status;
     bool success = true;
+    pid_t pid = fork();
+    cout << "just forked" << endl;
     
-    if ( (pid = fork()) < 0)                        // fork child process
+    if (pid < 0)                        // fork child process
     {
         perror("Fork Failed");
         exit(1);
@@ -36,9 +42,9 @@ bool Command::execute()
     {
         while (wait(&status) != pid)
         {                                       // parent waits for child;
-            if (WEXITSTATUS(status) == 1)
+            if (WEXITSTATUS(status) != 0)
             {
-                return false;   
+                return false;
             }
         }                                   // do nothing
     }
