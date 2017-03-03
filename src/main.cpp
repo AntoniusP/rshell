@@ -58,10 +58,10 @@ int main()
         queue<string> connectors;
         stack<Command*> commands;
         
-        for (unsigned a = 0; a < words.size(); a++)
-        {
-            cout << words.at(a) << endl;    
-        }
+        // for (unsigned a = 0; a < words.size(); a++)
+        // {
+        //     cout << words.at(a) << endl;    
+        // }
         
         vector<char*> argv;
         for (unsigned i = 0; i < words.size(); i++)
@@ -127,22 +127,18 @@ int main()
             }
         }
         
-        if ((commands.size() > connectors.size()) && !commands.empty())
+        if (commands.size() > connectors.size())
         {
-            cout << "command queue size: " << commands.size() << endl;
+            //cout << "command queue size: " << commands.size() << endl;
             stack<cmdComponent*> stack;
             
             while (!commands.empty())
             {
-                cout << "pushing command -> " << commands.top()->getArgs()[0];
-                
                 stack.push(commands.top());
                 commands.pop();
-                cout << " -stack size now: " << stack.size() << endl; 
             }
             
-            cout <<"stack size before tree:" << stack.size() << endl;
-            cout << "creating ex tree..." << endl;
+            //cout <<"stack size before tree:" << stack.size() << endl;
             while ((!connectors.empty()) && !stack.empty())
             {
                 cmdComponent* tleft = stack.top();
@@ -154,26 +150,21 @@ int main()
                 
                 if (connectors.front() == ";")
                 {
-                    cout << "made ';' connector" << endl;
                     tmp = new Semicolon(tleft, tright);
                 }
                 else if (connectors.front() == "&&")
                 {
-                    cout << "made '&&' connector" << endl;
                     tmp = new And(tleft, tright);
                 }
                 else
                 {
-                    cout << "made '||' connector" << endl;
                     tmp = new Or(tleft, tright);
                 }
                 stack.push(tmp);
                 connectors.pop();
             }
             
-            cout << "before ex" << endl;
             // finally execute tree of commands
-            cout << "stack size: " << stack.size() << endl;
             if (!stack.empty())
             {
                 stack.top()->execute();
@@ -182,7 +173,14 @@ int main()
         }
         else
         {
-            perror("Input error");
+            if (commands.size() == 0)
+            {
+                
+            }
+            else
+            {
+                cout << "Error: Invalid input" << endl;
+            }
         }
         
     }

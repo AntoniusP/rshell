@@ -2,7 +2,6 @@
 
 bool Or::execute() 
 {
-    cout << "Or ex" << endl;
     if (!left->execute())
     {
         if (right->execute())
