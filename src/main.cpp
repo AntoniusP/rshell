@@ -41,6 +41,7 @@ int main()
     
     while (1)           // shell should run indefinitely unless exited 
     {  
+        
         cout << "$ ";
         getline(cin, input);                        // get whole command line
         
@@ -55,18 +56,16 @@ int main()
         parse(input, words);
         
         queue<string> connectors;
-        queue<cmdComponent*> commands;
+        stack<Command*> commands;
         
         for (unsigned a = 0; a < words.size(); a++)
         {
             cout << words.at(a) << endl;    
         }
         
-        //unsigned j = 0;
         vector<char*> argv;
         for (unsigned i = 0; i < words.size(); i++)
         {
-            char** args = new char*[words.size()];
             char *sc  = (char*) memchr (words.at(i), ';', strlen(words.at(i)));
             char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
             char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
@@ -77,107 +76,113 @@ int main()
             {
                 if ( (com == NULL) && (i == (words.size() - 1)) )
                 {
-                     argv.push_back(words.at(i));
-                     char** args;
-                     copy(args, argv);
-                    //args[j] = words.at(i);
+                    argv.push_back(words.at(i));
+                    char** args;
+                    copy(args, argv);
                     Command* com = new Command();
                     com->setCommand(args);
                     commands.push(com);
-                     argv.clear();
+                    argv.clear();
                 }
                 else if (com == NULL)
                 {
-                     argv.push_back(words.at(i));
-                    //args[j] = words.at(i);
-                    //j++;
+                    argv.push_back(words.at(i));
                 }
                 else
                 {
-                    
+                    char** args;
+                    copy(args, argv);
                     Command* com = new Command();
                     com->setCommand(args);
                     commands.push(com);
-                     argv.clear();
+                    argv.clear();
                     break;
                 } 
             }
             else
             {
-                // j = 0;
                 string type = "";
                 if (sc)
                 {
-                    cout << "; connector" << endl;
                     type = ";";
                     connectors.push(type);
                 }
                 else if (And)
                 {
-                    cout << "&& connector" << endl;
                     type = "&&";
                     connectors.push(type);
                 }
                 else 
-                { 
-                    cout << "|| connector" << endl;
+                {
                     type = "||";
                     connectors.push(type);
                 }
                 
+                char** args;
+                copy(args, argv);
                 Command* com = new Command();
                 com->setCommand(args);
                 commands.push(com);
+                argv.clear();
             }
         }
         
-        cout << "command vector size: " << commands.size() << endl;
-        stack<cmdComponent*> stack;
-        
-        while (!commands.empty())
+        if ((commands.size() > connectors.size()) && !commands.empty())
         {
-            cout << "pushing command =>";
-            stack.push(commands.front());
-            commands.pop();
-            cout << "stack size now: " << stack.size() << endl; 
-        }
-        
-        cout <<"stack size before tree:" << stack.size() << endl;
-        cout << "creating ex tree..." << endl;
-        while ((!connectors.empty()) && !stack.empty())
-        {
-            cmdComponent* tleft = stack.top();
-            stack.pop();
-            cmdComponent* tright = stack.top();
-            stack.pop();
+            cout << "command queue size: " << commands.size() << endl;
+            stack<cmdComponent*> stack;
             
-            cmdComponent* tmp;
+            while (!commands.empty())
+            {
+                cout << "pushing command -> " << commands.top()->getArgs()[0];
+                
+                stack.push(commands.top());
+                commands.pop();
+                cout << " -stack size now: " << stack.size() << endl; 
+            }
             
-            if (connectors.front() == ";")
+            cout <<"stack size before tree:" << stack.size() << endl;
+            cout << "creating ex tree..." << endl;
+            while ((!connectors.empty()) && !stack.empty())
             {
-                cout << "made ';' connector" << endl;
-                tmp = new Semicolon(tleft, tright);
+                cmdComponent* tleft = stack.top();
+                stack.pop();
+                cmdComponent* tright = stack.top();
+                stack.pop();
+                
+                cmdComponent* tmp;
+                
+                if (connectors.front() == ";")
+                {
+                    cout << "made ';' connector" << endl;
+                    tmp = new Semicolon(tleft, tright);
+                }
+                else if (connectors.front() == "&&")
+                {
+                    cout << "made '&&' connector" << endl;
+                    tmp = new And(tleft, tright);
+                }
+                else
+                {
+                    cout << "made '||' connector" << endl;
+                    tmp = new Or(tleft, tright);
+                }
+                stack.push(tmp);
+                connectors.pop();
             }
-            else if (connectors.front() == "&&")
+            
+            cout << "before ex" << endl;
+            // finally execute tree of commands
+            cout << "stack size: " << stack.size() << endl;
+            if (!stack.empty())
             {
-                cout << "made '&&' connector" << endl;
-                tmp = new And(tleft, tright);
+                stack.top()->execute();
             }
-            else
-            {
-                cout << "made '||' connector" << endl;
-                tmp = new Or(tleft, tright);
-            }
-            stack.push(tmp);
-            connectors.pop();
+            
         }
-        
-        cout << "before ex" << endl;
-        // finally execute tree of commands
-        cout << "stack size: " << stack.size() << endl;
-        if (!stack.empty())
+        else
         {
-            stack.top()->execute();
+            perror("Input error");
         }
         
     }
