@@ -1,0 +1,8 @@
+echo A
+echo #A
+echo A #test
+echo A && echo B #test
+echo A && echo #B
+ls #bin 
+#testing
+exit

@@ -1,1 +1,2 @@
-#test files to be implemented later 
+#!/bin/sh
+../bin/rshell < commented_command

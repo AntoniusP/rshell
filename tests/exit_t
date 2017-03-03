@@ -1,2 +1,4 @@
+#exit
+echo A #exit
+echo A && exit
 exit
-echo

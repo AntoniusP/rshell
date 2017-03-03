@@ -1,0 +1,6 @@
+echo A ; echo B
+echo A && echo B
+echo A || echo B ; echo C
+echo A && ls
+echo test && touch t.cpp && echo made test file && rm t.cpp
+exit

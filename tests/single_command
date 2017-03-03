@@ -1,0 +1,7 @@
+echo A
+touch t.cpp
+echo t.cpp
+rm t.cpp
+echo B #test
+ls
+exit

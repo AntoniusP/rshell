@@ -1,1 +1,2 @@
-#test files to be implemented later 
+#!/bin/sh
+../bin/rshell < multi_command
