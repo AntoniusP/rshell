@@ -66,8 +66,6 @@ int main()
         // }
         
         //break up the vector of words into commands
-        //strcmp(args[0], "test") || strcmp(args[0], "[")
-        //(argv.at(0) == "test") || (argv.at(0) == "[")
         vector<char*> argv;
         for (unsigned i = 0; i < words.size(); i++)
         {
