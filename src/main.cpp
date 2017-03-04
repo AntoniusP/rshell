@@ -27,6 +27,7 @@ void parse(string keyword, vector<char*> &wordList)
     }
 }
 
+// copies a vector<char*> to a char* array
 void copy(char** &arr, vector<char*>& v)
 {
     v.push_back(NULL);
@@ -37,6 +38,7 @@ void copy(char** &arr, vector<char*>& v)
     }
 }
 
+
 int main() 
 {
     string input;
@@ -45,25 +47,20 @@ int main()
     {  
         
         cout << "$ ";
-        getline(cin, input);                        // get whole command line
+        getline(cin, input);        // get whole command line
         
-        if(input == "exit") 
+        if(input == "exit")
         {
             exit(0);
             break;
         }
         
         
+        queue<string> connectors;
+        stack<cmdComponent*> commands;
         vector<char*> words;
         parse(input, words);
         
-        queue<string> connectors;
-        stack<cmdComponent*> commands;
-        
-        // for (unsigned a = 0; a < words.size(); a++)
-        // {
-        //     cout << words.at(a) << endl;    
-        // }
         
         //break up the vector of words into commands
         vector<char*> argv;
@@ -73,7 +70,6 @@ int main()
             char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
             char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
             char *com = (char*) memchr (words.at(i), '#', strlen(words.at(i)));
-            
             
             if ( (sc == NULL && Or == NULL && And == NULL) ) 
             {
@@ -155,9 +151,10 @@ int main()
                 }
                 argv.clear();
             }
-        }
+        } //done breaking up words into commands
         
-        //cout << "commands size:" << commands.size() << endl;
+        
+        
         //set up the command tree
         if (commands.size() > connectors.size())
         {
@@ -170,7 +167,6 @@ int main()
                 commands.pop();
             }
             
-            //cout <<"stack size before tree:" << stack.size() << endl;
             while ((!connectors.empty()) && !stack.empty())
             {
                 cmdComponent* tleft = stack.top();
@@ -207,7 +203,7 @@ int main()
         {
             if (commands.size() == 0)
             {
-                
+                // do nothing
             }
             else
             {
@@ -215,7 +211,8 @@ int main()
             }
         }
         
-    }
+        
+    } // end of infinite while loop
     
     return 0;
 }
