@@ -14,6 +14,8 @@ class Test : public cmdComponent
 	
 	public:
 	Test();
+	~Test();
+	void setTest(char** a);
 	bool execute();		// runs the program with arguments 
 };
 

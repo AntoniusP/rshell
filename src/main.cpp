@@ -1,7 +1,9 @@
 #include "Command.h"
+#include "Test.h"
 #include "Or.h"
 #include "And.h"
 #include "Semicolon.h"
+
 
 #include <sys/stat.h>
 #include <stack>
@@ -56,13 +58,16 @@ int main()
         parse(input, words);
         
         queue<string> connectors;
-        stack<Command*> commands;
+        stack<cmdComponent*> commands;
         
         // for (unsigned a = 0; a < words.size(); a++)
         // {
         //     cout << words.at(a) << endl;    
         // }
         
+        //break up the vector of words into commands
+        //strcmp(args[0], "test") || strcmp(args[0], "[")
+        //(argv.at(0) == "test") || (argv.at(0) == "[")
         vector<char*> argv;
         for (unsigned i = 0; i < words.size(); i++)
         {
@@ -79,9 +84,18 @@ int main()
                     argv.push_back(words.at(i));
                     char** args;
                     copy(args, argv);
-                    Command* com = new Command();
-                    com->setCommand(args);
-                    commands.push(com);
+                    if((string(argv.at(0)) == "test") || (string(argv.at(0)) == "["))
+                    {
+                        Test* tst = new Test();
+                        tst->setTest(args);
+                        commands.push(tst);
+                    }
+                    else
+                    {
+                        Command* com = new Command();
+                        com->setCommand(args);
+                        commands.push(com);
+                    }
                     argv.clear();
                 }
                 else if (com == NULL)
@@ -92,9 +106,18 @@ int main()
                 {
                     char** args;
                     copy(args, argv);
-                    Command* com = new Command();
-                    com->setCommand(args);
-                    commands.push(com);
+                    if((string(argv.at(0)) == "test") || (string(argv.at(0)) == "["))
+                    {
+                        Test* tst = new Test();
+                        tst->setTest(args);
+                        commands.push(tst);
+                    }
+                    else
+                    {
+                        Command* com = new Command();
+                        com->setCommand(args);
+                        commands.push(com);
+                    }
                     argv.clear();
                     break;
                 } 
@@ -120,13 +143,24 @@ int main()
                 
                 char** args;
                 copy(args, argv);
-                Command* com = new Command();
-                com->setCommand(args);
-                commands.push(com);
+                if((string(argv.at(0)) == "test") || (string(argv.at(0)) == "["))
+                {
+                    Test* tst = new Test();
+                    tst->setTest(args);
+                    commands.push(tst);
+                }
+                else
+                {
+                    Command* com = new Command();
+                    com->setCommand(args);
+                    commands.push(com);
+                }
                 argv.clear();
             }
         }
         
+        //cout << "commands size:" << commands.size() << endl;
+        //set up the command tree
         if (commands.size() > connectors.size())
         {
             //cout << "command queue size: " << commands.size() << endl;
