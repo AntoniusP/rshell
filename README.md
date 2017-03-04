@@ -17,10 +17,9 @@ its next instruction based on the connector type.
 
 Specifications:
 - inputted commands/flags/connectors must be spaced out seperately
-- will be able to run class functions 
+- will be able to run commands with connectors
 - runs indefinitely unless the input is "exit"
 
 Bugs:
-- does not execute commands correctly
 - does not work if there is no space between connectors
 - will not exit if input is not "exit"
