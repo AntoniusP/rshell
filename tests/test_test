@@ -1,0 +1,15 @@
+test src
+test -e src
+test -f src
+test -d src
+test -f src/main.cpp
+test 123
+test one two
+test src one
+test src #one
+[ src ]
+[ src 
+[ -e src ]
+test Makefile && echo exists
+[ -f Makefile ] && echo exists
+exit
