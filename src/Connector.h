@@ -12,6 +12,6 @@ class Connector: public cmdComponent {
     Connector() : left(0), right(0) {}
     Connector(cmdComponent* l, cmdComponent* r) : left(l), right(r) {}
     ~Connector();
-    virtual bool execute() = 0;
+    virtual bool execute(int in, int out) = 0;
 };
 #endif

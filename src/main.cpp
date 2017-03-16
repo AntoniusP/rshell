@@ -3,7 +3,7 @@
 #include "Or.h"
 #include "And.h"
 #include "Semicolon.h"
-
+#include "Pipe.h"
 
 #include <sys/stat.h>
 #include <stack>
@@ -18,7 +18,7 @@ void parse(string keyword, vector<char*> &wordList)
         cs[i] = keyword[i];
     }
     cs[keyword.length()] = '\0';        //add the null terminator at the end of
-
+    
     char *tokens = strtok(cs, " ");
     while (tokens) 
     {
@@ -70,6 +70,7 @@ int main()
             char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
             char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
             char *com = (char*) memchr (words.at(i), '#', strlen(words.at(i)));
+            
             
             if ( (sc == NULL && Or == NULL && And == NULL) ) 
             {
@@ -131,7 +132,14 @@ int main()
                 }
                 else 
                 {
-                    type = "||";
+                    if (strlen(words.at(i)) <= 1)
+                    {
+                        type = "|";
+                    }
+                    else 
+                    {
+                        type = "||";
+                    }
                     connectors.push(type);
                 }
                 
@@ -184,9 +192,13 @@ int main()
                 {
                     tmp = new And(tleft, tright);
                 }
-                else
+                else if (connectors.front() == "||")
                 {
                     tmp = new Or(tleft, tright);
+                }
+                else 
+                {
+                    tmp = new Pipe(tleft, tright);
                 }
                 stack.push(tmp);
                 connectors.pop();
@@ -195,7 +207,7 @@ int main()
             // finally execute tree of commands
             if (!stack.empty())
             {
-                stack.top()->execute();
+                stack.top()->execute(0, 1);
             }
             
         }

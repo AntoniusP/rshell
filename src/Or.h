@@ -8,7 +8,7 @@ class Or: public Connector {
     public:
     Or() : Connector() {}
     Or(cmdComponent* l, cmdComponent* r) : Connector(l,r) {}
-    bool execute();
+    bool execute(int in, int out);
 };
 
 #endif

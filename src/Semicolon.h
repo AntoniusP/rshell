@@ -8,7 +8,7 @@ class Semicolon: public Connector {
     public:
     Semicolon() : Connector() {}
     Semicolon(cmdComponent* l, cmdComponent* r) : Connector(l,r) {}
-    bool execute();
+    bool execute(int in, int out);
 };
 
 #endif

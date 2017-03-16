@@ -16,7 +16,7 @@ void Command::setCommand(char** a)
     Args = a;
 }
 
-bool Command::execute() 
+bool Command::execute(int in, int out) 
 {
     // uses the command data to execute single command 
     int status;
@@ -30,6 +30,17 @@ bool Command::execute()
     }
     else if (pid == 0)
     {
+        if (dup2(in, 0) < 0)
+        {
+            perror("ERROR: dup2in");
+            return false;
+        }
+        
+        if (dup2(out, 1) < 0)
+        {
+            perror("ERROR: dup2out");
+        }
+        
         if (execvp(Args[0], Args) < 0)  // execute on child
         {
             success = false;

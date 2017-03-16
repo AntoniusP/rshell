@@ -15,7 +15,7 @@ void Test::setTest(char** a)
     Args = a;
 }
 
-bool Test::execute() 
+bool Test::execute(int in, int out) 
 {
     struct stat buf;
     vector<string> v;
@@ -28,6 +28,12 @@ bool Test::execute()
     {
         v.push_back(string(Args[i]));
         i++;
+    }
+    
+    if (dup2(out, 1) < 0)
+    {
+        perror("ERROR: dup2out");
+        return false;
     }
     
     // set flag and path
