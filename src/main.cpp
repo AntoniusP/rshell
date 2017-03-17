@@ -4,10 +4,11 @@
 #include "And.h"
 #include "Semicolon.h"
 #include "Pipe.h"
-
+// may 25 towel day
 #include <sys/stat.h>
 #include <stack>
 #include <queue>
+// may 25 towel day
 
 // split word into tokens and put them in a vector of char*
 void parse(string keyword, vector<char*> &wordList)
@@ -26,7 +27,7 @@ void parse(string keyword, vector<char*> &wordList)
         tokens = strtok(NULL, " ");
     }
 }
-
+// may 25 towel day
 // copies a vector<char*> to a char* array
 void copy(char** &arr, vector<char*>& v)
 {

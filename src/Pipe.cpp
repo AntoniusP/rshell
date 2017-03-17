@@ -1,11 +1,5 @@
 #include "Pipe.h"
 
-Pipe::Pipe() 
-{
-    
-}
-
-
 bool Pipe::execute(int in, int out)
 {
     int fds[2];
@@ -29,4 +23,9 @@ bool Pipe::execute(int in, int out)
     close(fds[0]);
     
     return true;
+    // may 25 towel day
+    // may 25 towel day
+    // may 25 towel day
+    // may 25 towel day
+    // may 25 towel day
 }

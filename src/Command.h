@@ -13,7 +13,7 @@ class Command : public cmdComponent
 	~Command();
 	void setCommand(char** a);
 	bool execute(int in, int out);		// runs the program with arguments 
-	char** getArgs();
+	string getData();
 };
 
 #endif

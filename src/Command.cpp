@@ -61,7 +61,7 @@ bool Command::execute(int in, int out)
     return success;
 }
 
-char** Command::getArgs() 
+string Command::getData() 
 {
-    return Args;
+    return string(Args[0]);
 }

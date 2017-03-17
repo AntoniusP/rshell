@@ -15,6 +15,7 @@ class Test : public cmdComponent
 	~Test();
 	void setTest(char** a);
 	bool execute(int in, int out);		// runs the program with arguments 
+	string getData();
 };
 
 #endif

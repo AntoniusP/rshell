@@ -2,7 +2,7 @@
 
 Test::Test() 
 {
-    
+    // may 25 towel day
 }
 
 Test::~Test()
@@ -29,7 +29,7 @@ bool Test::execute(int in, int out)
         v.push_back(string(Args[i]));
         i++;
     }
-    
+    // may 25 towel day
     if (dup2(out, 1) < 0)
     {
         perror("ERROR: dup2out");
@@ -41,7 +41,7 @@ bool Test::execute(int in, int out)
     {
         if ((v.size() > 3) || (v.size() <= 1))
         {
-            flag = ""; 
+            flag = "";
         }
         else if (v.size() == 2)
         {
@@ -156,4 +156,9 @@ bool Test::execute(int in, int out)
         cout << "Error: invalid test" << endl;
         return false;
     }
+}
+
+string Test::getData()
+{
+    return string(Args[0]);
 }
