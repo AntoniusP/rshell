@@ -4,6 +4,9 @@
 #include "And.h"
 #include "Semicolon.h"
 #include "Pipe.h"
+#include "OutputR.h"
+#include "OutputR2.h"
+#include "InputR.h"
 // may 25 towel day
 #include <sys/stat.h>
 #include <stack>
@@ -71,9 +74,11 @@ int main()
             char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
             char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
             char *com = (char*) memchr (words.at(i), '#', strlen(words.at(i)));
+            char *opR = (char*) memchr (words.at(i), '>', strlen(words.at(i)));
+            char *ipR = (char*) memchr (words.at(i), '<', strlen(words.at(i)));
             
             
-            if ( (sc == NULL && Or == NULL && And == NULL) ) 
+            if ( (sc == NULL) && (Or == NULL) && (And == NULL) && (opR == NULL) && (ipR == NULL) ) 
             {
                 if ( (com == NULL) && (i == (words.size() - 1)) )
                 {
@@ -129,6 +134,23 @@ int main()
                 else if (And)
                 {
                     type = "&&";
+                    connectors.push(type);
+                }
+                else if (ipR)
+                {
+                    type = "<";
+                    connectors.push(type);
+                }
+                else if (opR)
+                {
+                    if (strlen(words.at(i)) <= 1)
+                    {
+                        type = ">";
+                    }
+                    else 
+                    {
+                        type = ">>";
+                    }
                     connectors.push(type);
                 }
                 else 
@@ -196,6 +218,18 @@ int main()
                 else if (connectors.front() == "||")
                 {
                     tmp = new Or(tleft, tright);
+                }
+                else if (connectors.front() == ">")
+                {
+                    tmp = new OutputR(tleft, tright);
+                }
+                else if (connectors.front() == ">>")
+                {
+                    tmp = new OutputR2(tleft, tright);
+                }
+                else if (connectors.front() == "<")
+                {
+                    tmp = new InputR(tleft, tright);
                 }
                 else 
                 {
