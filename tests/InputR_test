@@ -1,0 +1,6 @@
+cat tests/txt/file1.txt
+cat < tests/txt/file1.txt
+wc < tests/txt/file1.txt
+grep test < tests/txt/file1.txt
+cat < tests/txt/file1.txt | wc
+exit

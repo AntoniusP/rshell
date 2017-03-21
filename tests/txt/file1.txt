@@ -1,2 +1,4 @@
-tests/txt
-      6       6      41
+Good Testing!
+
+Hello.
+Goodbye.

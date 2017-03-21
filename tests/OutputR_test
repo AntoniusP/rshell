@@ -1,0 +1,9 @@
+cat tests/txt/file1.txt
+echo ABCDE > tests/txt/file1.txt
+cat tests/txt/file1.txt
+echo FGHIJ > tests/txt/file1.txt
+ls | wc > tests/txt/file1.txt
+cat tests/txt/file1.txt
+ls | cat > tests/txt/file1.txt
+cat tests/txt/file1.txt
+exit

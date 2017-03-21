@@ -4,6 +4,7 @@ bool Pipe::execute(int in, int out)
 {
     int fds[2];
     
+    //start a pipe
     if (pipe(fds) == -1)
     {
         perror("pipe");
