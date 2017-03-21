@@ -2,8 +2,7 @@
 CS100 Assignment 
 
 Created by:
-Antonius Panggabean and
-Randy Yamanaka
+Antonius Panggabean
 
 ~
 
@@ -21,12 +20,12 @@ Specifications:
 
 - will be able to run commands (except cd) and the test command
 - can use test command with "[]"
+- can handle piping and input/output redirection
 - runs indefinitely unless the input is "exit"
 - creates commands and a command tree to execute
-
 
 Bugs:
 - does not work if there is no space between connectors
 - will not exit if input is not "exit"
 - echo's will include ""
-- precedence does not work yet
+- precedence is not functional

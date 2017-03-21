@@ -1,10 +1,10 @@
 #include "And.h"
 
-bool And::execute() 
+bool And::execute(int in, int out) 
 {
-    if(left->execute())
+    if(left->execute(in, out))
     {
-        if(right->execute())
+        if(right->execute(in, out))
         {
             return true;
         }

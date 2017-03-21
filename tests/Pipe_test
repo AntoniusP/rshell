@@ -1,0 +1,8 @@
+ls | wc
+ls | cat
+ls | cat | wc
+echo ABCD | wc
+cat tests/txt/file1.txt | wc
+cat < tests/txt/file1.txt | wc
+ls | cat && echo A | wc
+exit

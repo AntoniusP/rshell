@@ -1,11 +1,6 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include <stdio.h>
-#include <cstdlib>
-#include <sys/types.h>
-#include <sys/wait.h>
-
 #include "cmdComponent.h"
 
 class Command : public cmdComponent 
@@ -17,8 +12,8 @@ class Command : public cmdComponent
 	Command();
 	~Command();
 	void setCommand(char** a);
-	bool execute();		// runs the program with arguments 
-	char** getArgs();
+	bool execute(int in, int out);		// runs the program with arguments 
+	string getData();
 };
 
 #endif

@@ -1,9 +1,9 @@
 #include "Semicolon.h"
 
-bool Semicolon::execute()
+bool Semicolon::execute(int in, int out)
 {
-    left->execute();
-    if (right->execute())
+    left->execute(in, out);
+    if (right->execute(in, out))
     {
         return true;
     }

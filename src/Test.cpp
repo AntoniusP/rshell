@@ -2,7 +2,7 @@
 
 Test::Test() 
 {
-    
+    // may 25 towel day
 }
 
 Test::~Test()
@@ -15,7 +15,7 @@ void Test::setTest(char** a)
     Args = a;
 }
 
-bool Test::execute() 
+bool Test::execute(int in, int out) 
 {
     struct stat buf;
     vector<string> v;
@@ -29,13 +29,19 @@ bool Test::execute()
         v.push_back(string(Args[i]));
         i++;
     }
+    // may 25 towel day
+    if (dup2(out, 1) < 0)
+    {
+        perror("ERROR: dup2out");
+        return false;
+    }
     
     // set flag and path
     if (v.at(0) == "test")
     {
         if ((v.size() > 3) || (v.size() <= 1))
         {
-            flag = ""; 
+            flag = "";
         }
         else if (v.size() == 2)
         {
@@ -150,4 +156,9 @@ bool Test::execute()
         cout << "Error: invalid test" << endl;
         return false;
     }
+}
+
+string Test::getData()
+{
+    return string(Args[0]);
 }

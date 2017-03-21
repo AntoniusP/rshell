@@ -3,11 +3,15 @@
 #include "Or.h"
 #include "And.h"
 #include "Semicolon.h"
-
-
+#include "Pipe.h"
+#include "OutputR.h"
+#include "OutputR2.h"
+#include "InputR.h"
+// may 25 towel day
 #include <sys/stat.h>
 #include <stack>
 #include <queue>
+// may 25 towel day
 
 // split word into tokens and put them in a vector of char*
 void parse(string keyword, vector<char*> &wordList)
@@ -18,7 +22,7 @@ void parse(string keyword, vector<char*> &wordList)
         cs[i] = keyword[i];
     }
     cs[keyword.length()] = '\0';        //add the null terminator at the end of
-
+    
     char *tokens = strtok(cs, " ");
     while (tokens) 
     {
@@ -26,7 +30,7 @@ void parse(string keyword, vector<char*> &wordList)
         tokens = strtok(NULL, " ");
     }
 }
-
+// may 25 towel day
 // copies a vector<char*> to a char* array
 void copy(char** &arr, vector<char*>& v)
 {
@@ -70,8 +74,11 @@ int main()
             char *And = (char*) memchr (words.at(i), '&', strlen(words.at(i)));
             char *Or  = (char*) memchr (words.at(i), '|', strlen(words.at(i)));
             char *com = (char*) memchr (words.at(i), '#', strlen(words.at(i)));
+            char *opR = (char*) memchr (words.at(i), '>', strlen(words.at(i)));
+            char *ipR = (char*) memchr (words.at(i), '<', strlen(words.at(i)));
             
-            if ( (sc == NULL && Or == NULL && And == NULL) ) 
+            
+            if ( (sc == NULL) && (Or == NULL) && (And == NULL) && (opR == NULL) && (ipR == NULL) ) 
             {
                 if ( (com == NULL) && (i == (words.size() - 1)) )
                 {
@@ -129,9 +136,33 @@ int main()
                     type = "&&";
                     connectors.push(type);
                 }
+                else if (ipR)
+                {
+                    type = "<";
+                    connectors.push(type);
+                }
+                else if (opR)
+                {
+                    if (strlen(words.at(i)) <= 1)
+                    {
+                        type = ">";
+                    }
+                    else 
+                    {
+                        type = ">>";
+                    }
+                    connectors.push(type);
+                }
                 else 
                 {
-                    type = "||";
+                    if (strlen(words.at(i)) <= 1)
+                    {
+                        type = "|";
+                    }
+                    else 
+                    {
+                        type = "||";
+                    }
                     connectors.push(type);
                 }
                 
@@ -184,9 +215,25 @@ int main()
                 {
                     tmp = new And(tleft, tright);
                 }
-                else
+                else if (connectors.front() == "||")
                 {
                     tmp = new Or(tleft, tright);
+                }
+                else if (connectors.front() == ">")
+                {
+                    tmp = new OutputR(tleft, tright);
+                }
+                else if (connectors.front() == ">>")
+                {
+                    tmp = new OutputR2(tleft, tright);
+                }
+                else if (connectors.front() == "<")
+                {
+                    tmp = new InputR(tleft, tright);
+                }
+                else 
+                {
+                    tmp = new Pipe(tleft, tright);
                 }
                 stack.push(tmp);
                 connectors.pop();
@@ -195,7 +242,7 @@ int main()
             // finally execute tree of commands
             if (!stack.empty())
             {
-                stack.top()->execute();
+                stack.top()->execute(0, 1);
             }
             
         }
